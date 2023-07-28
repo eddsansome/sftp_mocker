@@ -6,7 +6,7 @@ class Uploader
   end
 
   def upload!(filepath)
-    connection.upload!(filepath, filepath)
+    connection.upload!(filepath, "/upload/"+filepath)
   end
 
   private

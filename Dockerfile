@@ -4,7 +4,6 @@ RUN echo "@community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /et
     apk add --no-cache bash shadow@community openssh-server-pam openssh-sftp-server && \
     ln -s /usr/sbin/sshd.pam /usr/sbin/sshd && \
     mkdir -p /var/run/sshd && \
-    mkdir /annual_statements && \
     rm -f /etc/ssh/ssh_host_*key*
 
 COPY files/sshd_config /etc/ssh/sshd_config
