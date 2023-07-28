@@ -1,0 +1,8 @@
+services:
+    sftp:
+        image: atmoz/sftp
+        volumes:
+            - ./upload:/home/upload/annual_statements
+        ports:
+            - "2222:22"
+        command: bob:p:1001
