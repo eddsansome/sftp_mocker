@@ -3,6 +3,7 @@ services:
         image: atmoz/sftp
         volumes:
             - ./upload/annual_statements:/home/bob/upload/annual_statements
+            - ./upload/bulk:/home/bob/upload/bulk
         ports:
             - "2222:22"
         command: bob:p:1001

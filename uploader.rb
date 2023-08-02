@@ -4,8 +4,9 @@ require 'net/sftp'
 
 class Uploader
   CHROOT_PATH = '/upload'
-  def initialize
-    @connection = Net::SFTP.start('0.0.0.0', 'bob', port: 2222, password: 'p')
+
+  def connection
+    Net::SFTP.start('0.0.0.0', 'bob', port: 2222, password: 'p')
   end
 
   def ls(path = '/')
@@ -18,14 +19,14 @@ class Uploader
     connection.mkdir("#{CHROOT_PATH}/annual_statements/#{dir}")
   end
 
-  def upload!(filepath)
-    puts "uploading #{filepath}...\n\n"
-    connection.upload!(filepath, "#{CHROOT_PATH}/#{filepath}")
+  def upload!(*files)
+    files.flatten
+         .map { |filepath| connection.upload!(filepath, "#{CHROOT_PATH}/#{filepath}") }
+         .each(&:wait)
+
+    connection.session.close
   end
 
-  private
-
-  attr_reader :connection
 end
 
 puts File.read('logo.txt')
@@ -35,3 +36,5 @@ Dir['annual_statements/*.txt'].each { |filename| uploader.upload!(filename) }
 uploader.mkdir('hello_world')
 uploader.ls
 uploader.ls('/annual_statements')
+uploader.upload!(Dir['bulk/*.txt'])
+uploader.ls('/bulk')
